@@ -13,6 +13,19 @@ var Enemy = function(x,y,speed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
+    this.x += this.speed * dt;
+    if (this.x > 500) {
+        this.x = -100;
+        this.speed = 100 + Math.floor(Math.random() * 300);
+    }
+
+    if (player.x < this.x + 70 &&
+        player.x + 70 > this.x &&
+        player.y < this.y + 60 &&
+        player.y + 60 > this.y) {
+        player.x = 200;
+        player.y = 400;
+    }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -44,17 +57,32 @@ Player.prototype.handleInput = function (keypress) {
     if (keypress === 'right' && this.x < 400) {
         this.x += 100;
     };
-    if (keypress === 'up' && this.y > -10) {
+    if (keypress === 'up' && this.y > -16) {
         this.y -= 83;
     };
     if (keypress === 'down' && this.y < 400) {
         this.y += 83;
     };
+    if (this.y < -15) {
+        this.x = 200;
+        this.y = 400;
+    }
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
+//y = 68 151 234 x = 0
+var enemyStart = [68, 151, 234];
+
+enemyStart.forEach(function(y){
+    allEnemies.push(new Enemy(0, y, 300));
+})
+// allEnemies.push(new Enemy(0, 68, 100));
+// allEnemies.push(new Enemy(0, 151, 200));
+// allEnemies.push(new Enemy(0, 234, 150));
+
+
 // Place the player object in a variable called player
 var player = new Player(200,400);
 
